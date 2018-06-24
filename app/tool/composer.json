@@ -1,0 +1,5 @@
+{
+    "require":{
+        "gregwar/captcha":"v1.1.6"
+    }
+}
