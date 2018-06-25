@@ -44,3 +44,12 @@ Route::get('/cart/deleteCart','view\cartController@deleteCart');
 Route::get('/order_submit/{product_ids}','view\cartController@toOrderSubmit')->middleware('check_login');
 Route::get('/order_list/{product_ids}','view\cartController@toOrderList')->middleware('check_login');
 
+Route::group(['prefix'=>'admin'],function(){
+     Route::get('index','admin\indexController@toIndex');
+     Route::get('categroy','admin\categroyController@toCategroy');
+     Route::get('login','admin\indexController@toLogin');
+     Route::post('login','admin\indexController@login');
+     Route::get('categroy_add','admin\categroyController@toCategroyAdd');
+     Route::post('toLogin','admin\loginController@toLogin');
+     Route::post('categroy/add','admin\categroyController@toCategroyTypeAdd');
+});

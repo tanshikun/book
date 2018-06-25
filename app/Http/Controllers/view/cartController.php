@@ -191,28 +191,33 @@ private function tongbuCart($member_id,$cart_arr){//将这个方法定义为私�
         $cart_items = cart_item::where('member_id',$member->id)->whereIn('product_id',$product_id_arr)->get();//在购物车中  首先使用memberid获取用户id所对应的数据  再通过商品id查询product_ids所对应的产品信息  再获取购物车的列表
         $cart_item_arr = array();
         $total_price = 0;
-
         $order = new order;
         $order->member_id =  $member->id;
-        
+        $name='';
         $order->save(); 
         foreach ($cart_items as $cart_item) {//通过foreach循环来显示我们的视图。
             $cart_item->product = product::where('id',$cart_item->product_id)->first();
             if($cart_item->product!=null){//如果商品信息不存在，可以采用添加的方式，将商品信息添加进来
                 $total_price+=$cart_item->product->price*$cart_item->count;
+                $name.='《'.$cart_item->product->name.'》';
                 array_push($cart_item_arr, $cart_item);
             }
                 $order_item = new order_item;
                 $order_item ->order_id = $order->id;
                 $order_item ->product_id=$cart_item->product_id;
                 $order_item ->count=$cart_item->count;
+                $order_item ->product_snapshot=json_encode($cart_item->product);
                 $order_item ->save();
         }
+        //删除购物车中的订单信息
+        cart_item::where('member_id',$member->id)->delete();
+
         $int=rand(100000,999999);
         $font="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         $time=time();
         $code=$font[rand(0,26)].$font[rand(0,26)].$font[rand(0,26)].$font[rand(0,26)].$time.$int;
         $order->order_no = $code ;
+        $order->name=$name;
         $order->total_price=$total_price;
         $order->save(); 
 

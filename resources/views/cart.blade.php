@@ -115,7 +115,6 @@ function selectAll(){
     function toCharge(){
         var product_id_arr = [];
         $('input:checkbox[name=cart_item]').each(function(index,el){//用属性选择器选择input对应的checkbox里面name为购物车cart_item的元素进行便利
-            
             if($(this).attr('checked')=='checked'){
              product_id_arr.push($(this).attr('id'));
             }
@@ -125,6 +124,7 @@ function selectAll(){
             $('.bk_toptips').show();
             $('.bk_toptips span').html("请选择提交项!");
             setTimeout(function() {$('.bk_toptips').hide();}, 2000);
+            return;
         }
         //console.log(product_id_arr);
         location.href='/order_submit/'+product_id_arr;

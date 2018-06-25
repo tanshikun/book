@@ -75,7 +75,9 @@ class memberController extends Controller
         if ($_POST['mode']=='tel') {//手机注册用户提交数据至数据库
             //判断用户提交的验证码和短信平台发送的验证码是否相符
             $phone = $_POST['tel'];//获取用户提交的phone的值
-
+            if($phone==''||$phone==null){
+                return response()->json(101,200);
+            }
             $phone_phone = temp_phone::where('phone',"$phone")->first();//通过where从数据库的temp_phone表中取出一条phone字段为用户提交的号码的数据
             $member_tel = member::where('phone',"$phone")->first();
             if($member_tel!=null){
@@ -83,6 +85,9 @@ class memberController extends Controller
             }
             $code = $_POST['code'];//获取用户上传的code
             $phone_code = $phone_phone -> code;//从这条数据中取出字段为code所对应的值,保存在phone_code中
+            if($phone_code==''||$phone_code==null){
+                return response()->json(102,200);
+            }
             if($code!=$phone_code||$code==''||strlen($code)!=4){
                 return response()->json(2,200);//验证码不正确
             }else{
@@ -102,6 +107,9 @@ class memberController extends Controller
             return response()->json('tel',200);
         }else{//邮箱注册用户提交数据至数据库
             $email = $_POST['emails'];
+            if($email==''||$email==null){
+                return response()->json(101,200);
+            }
             $temp_email = temp_email::where('member_id',"$email")->first();
             $member_email = member::where('email',"$email")->first();
             if($member_email!=null){
@@ -109,6 +117,9 @@ class memberController extends Controller
             }
             $code = $_POST['code'];
             $temp_code = $temp_email->code;
+            if($temp_code==''||$temp_code==null){
+                return response()->json(102,200);
+            }
             if($code==''||strlen($code)!=4||!$code==$temp_code){
                 return response()->json(6,200);//验证码输入不正确
             }else{

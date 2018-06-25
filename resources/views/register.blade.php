@@ -51,7 +51,7 @@
         </div>
     </div>
     <label for="weuiAgree" class="weui-agree">
-    <input id="weuiAgree" type="checkbox" class="weui-agree__checkbox">
+    <input id="weuiAgree" type="checkbox" class="weui-agree__checkbox" name="weuiAgree" checked="checked"onclick="return false" >
     <span class="weui-agree__text">
         阅读并同意<a href="javascript:void(0);">《相关条款》</a>
     </span>
@@ -64,15 +64,20 @@
     <a href="/login" class="important-tips">已有账户，立即登录！</a>
     </div>
 <script type="text/javascript">
-    let sendmode='tel';//设置手机注册页面的mode为tel,邮箱注册页面的mode为email,以便分开进行接值
+//相关条款勾选
+            
+        let sendmode='tel';//设置手机注册页面的mode为tel,邮箱注册页面的mode为email,以便分开进行接值
        function member_register(){
             //判断两次密码输入是否一致
             var password = document.getElementById('password');
             var repassword = document.getElementById('repassword');
             if(password.value != repassword.value){
-                alert('两次输入密码不一致');
+                    $('.bk_toptips').show();
+                    $('.bk_toptips span').html("两次输入密码不一致");
+                    setTimeout(function() {$('.bk_toptips').hide();}, 2000);
                 return;
-            }else{
+            }
+            
                 //如果mode为tel，那么ajax接值为手机注册页面
                     if (sendmode=='tel') {
                         var tels=document.getElementById('phone');
@@ -80,25 +85,35 @@
                         var code=document.getElementById('phone_vcode');
                        ajax('post','/logup','tel='+tels.value+'&password='+pwd.value+'&mode='+sendmode+'&code='+code.value+'&_token={{csrf_token()}}',function(data){
                             //console.log(data);
+                            if(data == 101){
+                                $('.bk_toptips').show();
+                                $('.bk_toptips span').html("请输入注册信息!");
+                                setTimeout(function() {$('.bk_toptips').hide();}, 2000);
+                            }
+                            if(data == 102){
+                                $('.bk_toptips').show();
+                                $('.bk_toptips span').html("请点击发送验证码!");
+                                setTimeout(function() {$('.bk_toptips').hide();}, 2000);
+                            }
                             if(data == 4){
                                 $('.bk_toptips').show();
-                    $('.bk_toptips span').html("密码不能少于6位!");
-                    setTimeout(function() {$('.bk_toptips').hide();}, 2000);
+                                $('.bk_toptips span').html("密码不能少于6位!");
+                                setTimeout(function() {$('.bk_toptips').hide();}, 2000);
                             }
                             if(data == 3){
                                 $('.bk_toptips').show();
-                    $('.bk_toptips span').html("该手机用户已注册!");
-                    setTimeout(function() {$('.bk_toptips').hide();}, 2000);
+                                $('.bk_toptips span').html("该手机用户已注册!");
+                                setTimeout(function() {$('.bk_toptips').hide();}, 2000);
                             }
                             if(data == 2){
                                 $('.bk_toptips').show();
-                    $('.bk_toptips span').html("验证码输入不正确!");
-                    setTimeout(function() {$('.bk_toptips').hide();}, 2000);
+                                $('.bk_toptips span').html("验证码输入不正确!");
+                                setTimeout(function() {$('.bk_toptips').hide();}, 2000);
                             }
                             if (data == 5) {
                                 $('.bk_toptips').show();
-                    $('.bk_toptips span').html("恭喜您，注册成功!");
-                    setTimeout(function() {$('.bk_toptips').hide();}, 2000);
+                                $('.bk_toptips span').html("恭喜您，注册成功!");
+                                setTimeout(function() {$('.bk_toptips').hide();}, 2000);
                                 location.href="/login";
                             }
                             });
@@ -108,31 +123,39 @@
                         var code=document.getElementById('email_vcode');
                         ajax('post','/logup','emails='+emails.value+'&mode='+sendmode+'&password='+pwd.value+'&code='+code.value+'&_token={{csrf_token()}}',function(data){
                             console.log(data);
+                            if(data == 101){
+                                $('.bk_toptips').show();
+                                $('.bk_toptips span').html("请输入注册信息!");
+                                setTimeout(function() {$('.bk_toptips').hide();}, 2000);
+                            }
+                            if(data == 102){
+                                $('.bk_toptips').show();
+                                $('.bk_toptips span').html("请点击发送验证码!");
+                                setTimeout(function() {$('.bk_toptips').hide();}, 2000);
+                            }
                             if(data == 7){
                                 $('.bk_toptips').show();
-                    $('.bk_toptips span').html("密码不能少于6位!");
-                    setTimeout(function() {$('.bk_toptips').hide();}, 2000);
+                                $('.bk_toptips span').html("密码不能少于6位!");
+                                setTimeout(function() {$('.bk_toptips').hide();}, 2000);
                             }
                             if(data == 9){
                                 $('.bk_toptips').show();
-                    $('.bk_toptips span').html("该邮箱已注册过!");
-                    setTimeout(function() {$('.bk_toptips').hide();}, 2000);
-                            }
+                                $('.bk_toptips span').html("该邮箱已注册过!");
+                                setTimeout(function() {$('.bk_toptips').hide();}, 2000);
+                                        }
                             if(data == 6){
                                $('.bk_toptips').show();
-                    $('.bk_toptips span').html("验证码输入不正确!");
-                    setTimeout(function() {$('.bk_toptips').hide();}, 2000);
+                                $('.bk_toptips span').html("验证码输入不正确!");
+                                setTimeout(function() {$('.bk_toptips').hide();}, 2000);
                             }
                             if (data == 8) {
                                 $('.bk_toptips').show();
-                    $('.bk_toptips span').html("恭喜您，注册成功!");
-                    setTimeout(function() {$('.bk_toptips').hide();}, 2000);
-                    location.href="/login";
+                                $('.bk_toptips span').html("恭喜您，注册成功!");
+                                setTimeout(function() {$('.bk_toptips').hide();}, 2000);
+                                location.href="/login";
                             }
-                            });
-                          
+                            });                      
                     }     
-            }   
         }
 </script>
     <div id="dialog1" style="display: none;">
@@ -155,6 +178,7 @@
     </div>
     
 <script type="text/javascript">
+ 
     function show(id){//隐藏或者显示手机注册和邮箱注册
         let tel=document.getElementById('te');
         let emi=document.getElementById('em');
