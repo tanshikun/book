@@ -52,4 +52,11 @@ Route::group(['prefix'=>'admin'],function(){
      Route::get('categroy_add','admin\categroyController@toCategroyAdd');
      Route::post('toLogin','admin\loginController@toLogin');
      Route::post('categroy/add','admin\categroyController@toCategroyTypeAdd');
+     Route::post('categroy/del','admin\categroyController@toCategroyTypeDel');
+     Route::get('product','admin\categroyController@toProduct');
+
 });
+
+     Route::get('admin/product_content/{id}','admin\categroyController@toProductContent');
+     Route::get('admin/product_add','admin\categroyController@toProductAdd');
+     Route::get('admin/product/add','admin\categroyController@ProductAdd');

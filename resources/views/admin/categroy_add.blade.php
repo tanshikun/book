@@ -1,6 +1,7 @@
 @extends('admin.master')
+
 @section('content')
-<form class="form form-horizontal" id="form-categroy-add" method="post" >
+<div class="form form-horizontal" id="form-categroy-add">
     <div class="row cl">
         <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>类别名称：</label>
         <div class="formControls col-xs-8 col-sm-9">
@@ -42,7 +43,7 @@
     <div class="row cl">
         <label class="form-label col-xs-4 col-sm-3">父类别：</label>
         <div class="formControls col-xs-8 col-sm-9"> <span class="select-box" style="width:150px;">
-            <select class="select" name="adminRole" size="1" name="parent_id" id="parent_id">
+            <select class="select"  size="1" name="parent_id" id="parent_id">
                 <option value="0">无</option>
                 @foreach($categries as $categroy)       
                  <option value="{{$categroy->id}}">{{$categroy->name}}</option>          
@@ -50,12 +51,23 @@
             </select>
             </span> </div>
     </div>
+    <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <div class="row cl">
-        <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
-            <input class="btn btn-primary radius" type="submit" onclick="tijiao()" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+        <label class="form-label col-xs-4 col-sm-3">预览图：</label>
+        <div class="formControls col-xs-8 col-sm-9"> 
+                <input type="file" name="file" id="file_upload" />
+
+            </div>
+    </div>
+    <script>
+        
+    </script>
+
+        <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3" style="margin-top:20px">
+            <input class="btn btn-primary radius" onclick="tijiao()" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
         </div>
     </div>
-    </form>
+    </div>
 @endsection
 @section('my-js')
 <script type="text/javascript">
@@ -66,35 +78,20 @@ function tijiao(){
     var index = sel.selectedIndex;
     var parent_id = sel.options[index].value;
 
-
-    //return parent_id;
-    $.ajax({
-        url: 'admin/categroy/add',
-        type: 'GET',
-        dataType: 'json',
-        data: { name:name1,
-                categroy_no:categroy_no,
-                parent_id:parent_id,
-                _token:"{{ csrf_token() }}",
-                },
-        success:function(data){
+    ajax('post','/admin/categroy/add','name='+name1+'&categroy_no='+categroy_no+'&parent_id='+parent_id+'&_token={{csrf_token()}}',function(data){
             if(data==6){
                 alert('请认真填写类别名称');
                 return;
             }
             if(data==7){
                 alert('请认真填写类别编号');
-                return;
-            }
-            if(data==8){
-                alert('添加成功！');
-                parent.location.reload();//成功之后刷新当前页面的父页面
-            }
-
-        }
-    });
-}
-    
+               return;
+           }
+           if(data==8){
+               alert('添加成功！');
+               parent.location.reload();//成功之后刷新当前页面的父页面
+           }
+   });}
 </script> 
 @endsection
 

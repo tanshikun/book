@@ -8,5 +8,5 @@ class categroy extends Model
 {
     protected $table = 'categroy';
     protected $primarykey = 'id';
-    
+    public $timestamps = false;
 }

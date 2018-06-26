@@ -30,8 +30,8 @@
                     @endif
                 </td>
                 <td class="td-manage">
-                <a title="编辑" href="javascript:;" onclick="member_edit('编辑','member-add.html','4','','510')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>  
-                <a title="删除" href="javascript:;" onclick="member_del(this,'1')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+                <a title="编辑" href="javascript:;" onclick="categroy_edit('编辑','member-add.html','4','','510')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>  
+                <a title="删除" href="javascript:;" onclick="categroy_del('{{$categroy->name}}',{{$categroy->id}})" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
             </tr>
             @endforeach
         </tbody>
@@ -51,4 +51,24 @@
     layer.full(index);
 }
 </script>
+<script type="text/javascript">
+ function categroy_del(name,id){
+        layer.confirm('确认要删除【'+name+'】吗？',function(index){
+        ajax('post','/admin/categroy/del','id='+id+'&_token={{csrf_token()}}',function(data){
+                if(data==null){
+                    alert('服务器错误');
+                    return;
+                }
+                if(data!=9){
+                    alert('删除失败');
+                    return;
+                }
+                if(data==9){
+                    alert('删除成功');
+                    location.replace(location.href);
+                } 
+                });});  
+  }
+</script>
 @endsection
+   
