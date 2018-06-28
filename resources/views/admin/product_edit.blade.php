@@ -6,15 +6,19 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>产品名称：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" id="name" name="name">
+                <input type="text" class="input-text" id="name" name="name" value="{{$product->name}}">
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>一级类别：</label>
             <div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
                 <select name="categroy" id="categroy" class="select" onchange="changValue()">
-                @foreach($categries as $categroy)
-                    <option value="{{$categroy->id}}">{{$categroy->name}}</option>
+               @foreach($categries as $categroy)
+                    @if($categroy->id==$categroy_one->id)
+                    <option value="{{$categroy->id}}" selected>{{$categroy->name}}</option>
+                    @else
+                    <option value="{{$categroy->id}}" >{{$categroy->name}}</option>
+                    @endif
                 @endforeach    
                 </select>
                 </span> </div>
@@ -25,7 +29,6 @@
             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>二级类别：</label>
             <div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
                 <select name="categroy_next" id="categroy_next" class="select_next select">
-
                 </select>
                 </span> </div>
         </div>
@@ -33,34 +36,34 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2">简介：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" id="summary" name="summary">
+                <input type="text" class="input-text" id="summary" name="summary" value="{{$product->summary}}">
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2">价格：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" name="price" id="price" class="input-text" style="width:90%">
+                <input type="text" name="price" id="price" class="input-text" style="width:90%" value="{{$product->price}}">
                 元</div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2">详细内容</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <script type="text/plain" id="editor" style="width:100%;height:400px"></script>
+                <input type="text" id="content" style="width:100%;height:400px" value="{!!$product_content->content!!}">
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2">图片：</label>
+            <label class="form-label col-xs-4 col-sm-2">预览图：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <div class="uploader-thum-container">
                     <div id="fileList" class="uploader-list"></div>
-                    <input type="file" name="file" id="file_upload" />
+                    <input type="file" name="file" id="file_upload"/>
                 </div>
             </div>
         </div>
        
         <div class="row cl">
             <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
-                <button onClick="content_submit()" class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe632;</i>  提交</button>
+                <button onClick="submit()" class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe632;</i>  提交</button>
                 <button onClick="" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
             </div>
         </div>
@@ -68,9 +71,6 @@
 </div>
 @endsection
 @section('my-js')
-
-<script type="text/javascript" src="lib/ueditor/1.4.3/ueditor.config.js"></script>
-<script type="text/javascript" src="lib/ueditor/1.4.3/ueditor.all.min.js"> </script>
 
 <script type="text/javascript">
      window.onload=(changValue());
@@ -98,15 +98,14 @@
     }
 
 
-    function content_submit(){
-        var ue =UE.getEditor('editor');
-        ue.execCommand("getlocaldata");
-        var content = ue.getContent();
+    function submit(){
+        var content =$('#content').val();
         var name = $('#name').val();
         var parent_id = $('#categroy').val();
         var id=$('#categroy_next').val();
         var summary=$('#summary').val();
         var price=$('#price').val();
+        var product_id="{{$product->id}}";
         var formData = new FormData();
             formData.append("image", $("#file_upload")[0].files[0]);
             formData.append("name",name);
@@ -115,9 +114,10 @@
             formData.append("summary",summary);
             formData.append("price",price);
             formData.append("content",content);
+            formData.append("product_id",product_id);
             formData.append("_token",'{{csrf_token()}}');
             $.ajax({
-                url: '/admin/productadd',
+                url: '/admin/product_edit',
                 type: 'POST',
                 data: formData,
                 processData: false,
@@ -131,41 +131,7 @@
                 }
             });
     }
-</script> 
-<script type="text/javascript">
-    var ue =UE.getEditor('editor');
-    ue.execCommand("getlocaldata");
 
-    var name =document.getElementById('name');
-    var sel = document.getElementById('categroy');
-    var index = sel.selectedIndex;
-    var categroy = sel.options[index].value;
-    var summary =document.getElementById('summary');
-    var content = ue.getContent();
-    function product_submit(){
-        $.ajax({
-            url: '/admin/product/add',
-            type: 'POST',
-            dataType: 'json',
-            data: {
-                name:name,
-                categroy:categroy,
-                summary:summary,
-                content:content,
-                _token:"{{csrf_token()}}"
-            },
-        })
-        .done(function() {
-            console.log("success");
-        })
-        .fail(function() {
-            console.log("error");
-        })
-        .always(function() {
-            console.log("complete");
-        });
-        
-    }
-   
+    
 </script>
 @endsection

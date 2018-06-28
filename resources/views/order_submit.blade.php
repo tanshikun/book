@@ -29,6 +29,24 @@
             </select>
         </div>
     </div>
+    <div class="weui-cells__title">填写发货信息</div>
+        <div class="weui-cell">
+        <div class="weui-cell__bd">
+            收件人：<span style="float:right;margin-right:10px;color:red; font-weight:bold"><input type="text" name="name" value="" style="height:25px;width:250px;border:1px solid #cccccc"></span>
+        </div>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__bd">
+            电话号码：<span style="float:right;margin-right:10px;color:red; font-weight:bold"><input type="text" name="tel" value=""  style="height:25px;width:250px;border:1px solid #cccccc"></span>
+        </div>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__bd">
+            详细地址：<span style="float:right;margin-right:10px;color:red; font-weight:bold"><input type="text" name="address" value=""  style="height:25px;width:250px;border:1px solid #cccccc"></span>
+        </div>
+    </div>
+ 
+    </div>
 </div>  
     <div class="weui-cells__title"></div>
     <div class="weui-cells">
@@ -54,7 +72,30 @@ function order_list(){
     @foreach($product_ids as $pro)
         ids.push({{$pro}});
     @endforeach
-    location.href="/order_list/"+ids;
+    //location.href="/order_list/"+ids;
+    var value =$('#weui-select').val();
+    var name=$('#name').val();
+    var tel=$('#tel').val();
+    var address=$('#address').val();
+    $.ajax({
+        url: '/order_list/'+ids,
+        type: 'POST',
+        dataType: 'json',
+        data: {value: value,
+                name:name,
+                tel:tel,
+                address:address},
+    })
+    .done(function() {
+        console.log("success");
+    })
+    .fail(function() {
+        console.log("error");
+    })
+    .always(function() {
+        console.log("complete");
+    });
+    
 }
 
 </script>

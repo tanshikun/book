@@ -211,7 +211,7 @@ private function tongbuCart($member_id,$cart_arr){//将这个方法定义为私�
         }
         //删除购物车中的订单信息
         cart_item::where('member_id',$member->id)->delete();
-
+        //生成订单号
         $int=rand(100000,999999);
         $font="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         $time=time();
@@ -229,7 +229,6 @@ private function tongbuCart($member_id,$cart_arr){//将这个方法定义为私�
      }
 
 
-
      public function toOrderList(Request $request,$product_ids){
         $product_id_arr = $product_ids!='' ? explode(',', $product_ids) : array();
         $member = $request->session()->get('member','');//查询用户信息
@@ -244,26 +243,10 @@ private function tongbuCart($member_id,$cart_arr){//将这个方法定义为私�
             $cart_item->product = product::where('id',$cart_item->product_id)->first();
            if($cart_item->product!=null){
                 $total_price+=$cart_item->product->price*$cart_item->count;
-                $total_count+=$cart_item->count;
+                $total_count += $cart_item->count;
                 array_push($cart_item_arr,$cart_item);
             }}
            
-        //  if($cart_items!=null&&$cart_items!=''){
-        //      $order = new order;
-        //      $order->member_id =  $member_id;
-        //      $order->total_price=$total_price;
-        //      $order->save(); 
-        //   } 
-        //  }
-          //foreach ($cart_items as $cart_item){
-           //if($cart_items!=null&&$cart_items!=''){
-            //    $order_item = new order_item;
-             //   //$order_item ->order_id = $order->id;
-             //   $order_item ->product_id=$cart_item->product_id;
-             //   $order_item ->count=$cart_item->count;
-              //  $order_item ->save();
-           // }
-           // }
         $orders = order::where('member_id',$member->id)->get();//根据memberid查询订单列表信息
 
         foreach($orders as $order){

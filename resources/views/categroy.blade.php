@@ -19,19 +19,6 @@
         </div>
     </div>
 </div>
-<!-- <div class="weui-cells">
-    <div class="weui-cell weui-cell_select weui-cell_select-after">
-       <div class="weui-cell__hd">
-           <label for="" class="weui-label">国家/地区</label>
-       </div>
-       <div class="weui-cell__bd">
-           <select class="weui-select" name="select2">
-               <option value="{{$categroy->id}}">{{$categroy->name}}</option>
-
-           </select>
-       </div>
-   </div>
-</div> -->
 <div class="weui-cells weui-cells_access" id="total">
    
 </div> 
@@ -42,7 +29,6 @@
 <script type="text/javascript">
  
     window.onload=(getCategroy(1));
-
     $('.weui-select').change(function(e){//监听选择发生变化时  所对应的parent_id的变化
         getCategroy(e.currentTarget.value);
         });

@@ -5,7 +5,7 @@
 <div class="page-container">
     <div class="cl pd-5 bg-1 bk-gray mt-20"> 
         <span class="l">
-            <a href="javascript:;" onclick="categroy_add('添加类别','/admin/categroy_add','','510')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加类别</a></span>
+            <a href="javascript:;" onclick="categroy_add('添加类别','/admin/categroy_add')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加类别</a></span>
             <span class="r">共有数据：<strong>{{count($categries)}}</strong> 条</span> </div>
     <div class="mt-20">
     <table class="table table-border table-bordered table-hover table-bg table-sort">
@@ -30,7 +30,7 @@
                     @endif
                 </td>
                 <td class="td-manage">
-                <a title="编辑" href="javascript:;" onclick="categroy_edit('编辑','member-add.html','4','','510')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>  
+                <a title="编辑" href="javascript:;" onclick="categroy_edit('编辑','/admin/categroy_edit?id={{$categroy->id}}')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>  
                 <a title="删除" href="javascript:;" onclick="categroy_del('{{$categroy->name}}',{{$categroy->id}})" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
             </tr>
             @endforeach
@@ -50,11 +50,20 @@
     });
     layer.full(index);
 }
+    function categroy_edit(name,url){
+    var index = layer.open({
+        type: 2,
+        title: name,
+        content: url
+    });
+    layer.full(index);
+}
 </script>
 <script type="text/javascript">
  function categroy_del(name,id){
         layer.confirm('确认要删除【'+name+'】吗？',function(index){
         ajax('post','/admin/categroy/del','id='+id+'&_token={{csrf_token()}}',function(data){
+
                 if(data==null){
                     alert('服务器错误');
                     return;
@@ -64,7 +73,6 @@
                     return;
                 }
                 if(data==9){
-                    alert('删除成功');
                     location.replace(location.href);
                 } 
                 });});  

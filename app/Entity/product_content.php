@@ -8,4 +8,5 @@ class product_content extends Model
 {
     protected $table = 'product_content';
     protected $primarykey = 'id';
+    public $timestamps = false;
 }

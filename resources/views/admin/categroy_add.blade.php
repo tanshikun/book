@@ -52,17 +52,6 @@
             </span> </div>
     </div>
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
-    <div class="row cl">
-        <label class="form-label col-xs-4 col-sm-3">预览图：</label>
-        <div class="formControls col-xs-8 col-sm-9"> 
-                <input type="file" name="file" id="file_upload" />
-
-            </div>
-    </div>
-    <script>
-        
-    </script>
-
         <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3" style="margin-top:20px">
             <input class="btn btn-primary radius" onclick="tijiao()" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
         </div>
@@ -72,26 +61,52 @@
 @section('my-js')
 <script type="text/javascript">
 function tijiao(){
+    //var name1 = document.getElementById('name1').value;
+    //var categroy_no = document.getElementById('categroy_no').value;
+    //var sel = document.getElementById('parent_id');
+    //var index = sel.selectedIndex;
+    //var parent_id = sel.options[index].value;
+
+    //ajax('post','/admin/categroy/add','name='+name1+'&categroy_no='+categroy_no+'&parent_id='+parent_id+'&_token={{csrf_token()}}',function(data){
+    //        if(data==6){
+    //            alert('请认真填写类别名称');
+    //            return;
+    //        }
+    //        if(data==7){
+    //            alert('请认真填写类别编号');
+    //           return;
+    //       }
+    //       if(data==8){
+    //           alert('添加成功！');
+    //           parent.location.reload();//成功之后刷新当前页面的父页面
+    //       }
+   //});
+    var formData = new FormData();
     var name1 = document.getElementById('name1').value;
     var categroy_no = document.getElementById('categroy_no').value;
     var sel = document.getElementById('parent_id');
     var index = sel.selectedIndex;
     var parent_id = sel.options[index].value;
+     formData.append("name",name1);
+      formData.append("categroy_no",categroy_no);
+       formData.append("parent_id",parent_id);
+    formData.append("_token",'{{csrf_token()}}');
+    $.ajax({
+        url: '/admin/categroy/add',
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (msg) {
+            alert(msg);
+            parent.location.reload();
+        },
+        error:function (data,status,sts) {
+            console.log(data);
+        }
+    });
 
-    ajax('post','/admin/categroy/add','name='+name1+'&categroy_no='+categroy_no+'&parent_id='+parent_id+'&_token={{csrf_token()}}',function(data){
-            if(data==6){
-                alert('请认真填写类别名称');
-                return;
-            }
-            if(data==7){
-                alert('请认真填写类别编号');
-               return;
-           }
-           if(data==8){
-               alert('添加成功！');
-               parent.location.reload();//成功之后刷新当前页面的父页面
-           }
-   });}
+   }
 </script> 
 @endsection
 

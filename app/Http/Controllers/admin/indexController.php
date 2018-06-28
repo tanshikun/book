@@ -15,5 +15,7 @@ class indexController extends Controller
     public function toIndex(){
         return view('admin/index');
    }
-
+    public function toOrderList(){
+            return view('admin/orderList');
+       }
 }

@@ -26,24 +26,30 @@ class categroyController extends Controller
     return view('admin.categroy_add',['categries'=>$categries]);
    }
    public function toCategroyTypeAdd(){
-      $name =$_POST['name'];
+      $names =$_POST['name'];
       $categroy_no=$_POST['categroy_no'];
       $parent_id=$_POST['parent_id'];
-      if($name==null&&$name==''){
-        return response()->json(6,200);//请认真填写类别名称
-      }
-      if($categroy_no==null&&$categroy_no==''&&$categroy_no<1){
-        return response()->json(7,200);//请重新填写类别编号
-      }
-      $categroy = new categroy;
-      $categroy->name = $name;
-      $categroy->categroy_no =$categroy_no;
-      if($parent_id!=''&&$parent_id!=null){
-        $categroy->parent_id =$parent_id;
-      }
-      $categroy->save();
-      return response()->json(8,200);//添加成功
+      
+       if($names==null&&$names==''){
+            return response()->json('请认真填写类别名称',200);//请认真填写类别名称
+          }
+        if($categroy_no==null&&$categroy_no==''&&$categroy_no<1){
+            return response()->json('请重新填写类别编号',200);//请重新填写类别编号
+          }
+        $categroy = new categroy;
+        $categroy->name = $names;
+        $categroy->categroy_no =$categroy_no;
+        if($parent_id!=''&&$parent_id!=null){
+            $categroy->parent_id =$parent_id;
+          }
+        $categroy->save();
+        return response()->json('添加成功！',200);//添加成功 
+
+        
    }
+
+    
+
     public function toCategroyTypeDel(){
         $id=$_POST['id'];
         categroy::where('id',$id)->delete();
@@ -73,9 +79,41 @@ class categroyController extends Controller
     }
     public function toProductAdd(){
         $categries=categroy::whereNull('parent_id')->get();
-        return view('admin/product_add')->with('categries',$categries);
+        //return response()->json($categries);
+        return view('admin/product_add',['categries'=>$categries]);
     }
     public function ProductAdd(){
     
+    }
+    public function categroyEdit(Request $Request){
+        $id = $Request->input('id','');
+        $categries=categroy::whereNull('parent_id')->get();
+        //return response()->json($categries);
+        $categroy=categroy::where('id',$id)->first();
+        //return response()->json($categroy);
+        return view('admin/categroy_edit')->with('categroy',$categroy)
+                                          ->with('categries',$categries);
+    }
+    public function toCategroyEdit(Request $request){
+        $id = $request->input('id','');
+        $categroy=categroy::find($id);
+        //return response()->json($categroy);
+        
+        $name = $_POST['name'];
+        $categroy_no = $_POST['categroy_no'];
+        $parent_id=$_POST['parent_id'];
+
+        
+        $categroy->name = $name;
+        $categroy->categroy_no =$categroy_no;
+        if($parent_id!=''&&$parent_id!=null){
+            $categroy->parent_id =$parent_id;
+        }
+        $categroy->save();
+        return response()->json(8,200);//修改成功
+    }
+    public function product_add($id){
+      $categroys = categroy::where('parent_id',$id)->get(); 
+      return response()->json($categroys,200);
     }
 }

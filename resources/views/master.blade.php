@@ -31,6 +31,7 @@
                 <div class="weui-actionsheet__cell" style="text-align:center" id="user_login">用户登录</div>
                 <div class="weui-actionsheet__cell" style="text-align:center" id="categroy_list">商品列表</div>
                 <div class="weui-actionsheet__cell" style="text-align:center" id="pdt_cart">购物车</div>
+                <div class="weui-actionsheet__cell" style="text-align:center" id="my_item">我的订单</div>
                 <div class="weui-actionsheet__cell" style="text-align:center">个人中心</div>
             </div>
         </div>
@@ -65,6 +66,9 @@
          });
          $("#pdt_cart").on('click', function(){
             location.href="/cart";
+         });
+         $("#my_item").on('click', function(){
+            location.href="/order_list";
          });
     });
 

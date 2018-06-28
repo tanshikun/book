@@ -38,7 +38,7 @@
             </tr>
             <tr class="text-c">
                 <td width="150">详细内容</td>
-                <td width="300" class="left">{{$products->content}}</td> 
+                <td width="300" class="left">{!!$products->content!!}</td> 
             </tr>
             <tr class="text-c">
                 <td width="150">产品图片</td>
@@ -51,4 +51,5 @@
         </tbody>
     </table>
 </div>
+
 @endsection

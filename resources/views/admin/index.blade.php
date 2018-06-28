@@ -50,7 +50,7 @@
             <dt><i class="Hui-iconfont">&#xe687;</i> 订单管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
             <dd>
                 <ul>
-                    <li><a data-href="http://h-ui.duoshuo.com/admin/" data-title="订单列表" href="javascript:;">订单列表</a></li>
+                    <li><a data-href="/admin/orderList" data-title="订单列表" href="javascript:;">订单列表</a></li>
 
             </ul>
         </dd>
