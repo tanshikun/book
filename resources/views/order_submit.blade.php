@@ -12,8 +12,12 @@
                     <div style="position:relative; width:100%; padding:5px" >
                         <img src="{{$cart_item->product->preview}}" class="bk_preview1">
                         <div style="position:absolute; left:100px;right:0;top:0; width:50em;">
-                        <p style="width:50em; font-size:14px">{{$cart_item->product->name}}</p>
-                        <p class="bk_time1" style="margin-top:15px; color:red">{{$cart_item->product->price}}<span class="bk_summary">×</span>{{$cart_item->count}}</p>
+                        <p style="width:50em; font-size:14px" id="name">{{$cart_item->product->name}}</p>
+                          <p class="bk_time1" style="margin-top:15px; color:red">
+                            <span>{{$cart_item->product->price}}</span>
+                            <span class="bk_summary">×</span>
+                            <span>{{$cart_item->count}}</span>
+                          </p>
                         </div>
                     </div>
                 </div>
@@ -80,15 +84,18 @@ function order_list(){
     @endforeach
     //location.href="/order_list/"+ids;
     var tel=$('#tel').val();
-    var name=$('#names').val();
+    var names=$('#names').val();
     var payway=$('#weui-select').val();
     var address=$('#address').val();
+    var total_price="{{$total_price}}";
     $.ajax({
-           url: '/order_address',
+           url: '/order_address/'+ids,
            type: 'POST',
            dataType: 'json',
-           data: {name:name,
+           data: {
                   tel:tel,
+                  names:names,
+                  total_price:total_price,
                     payway:payway,
                     address:address,
                     _token:"{{csrf_token()}}"},
@@ -99,14 +106,14 @@ function order_list(){
                     setTimeout(function() {$('.bk_toptips').hide();}, 2000);
                         return;
                     }
-                    if(data.status!=0){
-                        
+                    if(data==1){
+                        alert('请认真填写收货信息');
+                        return;
                     }
-                    location.href="/order_list/"+ids;
-                } 
-       })
-
-          
+                    console.log(data);
+                    location.href="/order_list";
+                    }               
+       });        
 }
 
 </script>

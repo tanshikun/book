@@ -10,17 +10,18 @@
     <table class="table table-border table-bordered table-bg">
         <thead>
             <tr>
-                <th scope="col" colspan="9">产品列表</th>
+                <th scope="col" colspan="10">订单列表</th>
             </tr>
             <tr class="text-c">
                 <th width="25"><input type="checkbox" name="" value=""></th>
                 <th width="40">ID</th>
                 <th width="150">会员号</th>
                 <th width="90">订单号</th>
+                <th width="150">收件人</th>
                 <th width="150">送货地址</th>
                 <th width="150">电话号码</th>
                 <th width="130">下单时间</th>
-                <th width="130">支付状态</th>
+                <th width="130">交易状态</th>
                 <th width="100">操作</th>
             </tr>
         </thead>
@@ -28,18 +29,21 @@
         <tbody>
 
             <tr class="text-c">
+            @foreach($orders as $order)
                 <td><input type="checkbox" value="1" name=""></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>{{$order->id}}</td>
+                <td>{{$order->member->email}}</td>
+                <td>{{$order->order_no}}</td>
+                <td>{{$order->names}}</td>
+                <td>{{$order->address}}</td>
+                <td>{{$order->tel}}</td>
+                <td>{{$order->created_at}}</td>
+                <td>{{$order->status}}</td>
                 <td class="td-manage">
                 <a title="产品详情" href="javascript:;" onclick="product_content('产品详情','')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe695;</i></a> 
                 <a title="删除" href="javascript:;" onclick="product_del()" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>
                 </td>
+            @endforeach
             </tr>
 
             

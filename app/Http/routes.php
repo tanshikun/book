@@ -43,17 +43,20 @@ Route::get('/cart','view\cartController@toCart');
 Route::get('/cart/deleteCart','view\cartController@deleteCart');
 Route::get('/order_submit/{product_ids}','view\cartController@toOrderSubmit')->middleware('check_login');
 //收货地址填写
-Route::post('/order_address','view\cartController@toOrderAddress');
-
-
-Route::post('/order_list/{product_ids}','view\cartController@toOrderList')->middleware('check_login');
-
-
-
+Route::post('/order_address/{product_ids}','view\cartController@toOrderAddress');
+Route::any('/order_list','view\cartController@toOrderList')->middleware('check_login');
+//取消订单
+Route::post('/order_cancel/{order_no}','view\cartController@toOrderCancel');
 
 
 
 
+
+
+
+
+
+//管理后台的路由
 Route::group(['prefix'=>'admin'],function(){
     //主页
      Route::get('index','admin\indexController@toIndex');
@@ -61,7 +64,8 @@ Route::group(['prefix'=>'admin'],function(){
      Route::get('categroy','admin\categroyController@toCategroy');
      //管理员登录
      Route::get('login','admin\indexController@toLogin');
-     Route::get('orderList','admin\indexController@toOrderList');
+     //订单列表
+     Route::get('orderList','admin\orderController@toOrderList');
      Route::post('login','admin\indexController@login');
      //产品添加
      Route::get('categroy_add','admin\categroyController@toCategroyAdd');
@@ -90,4 +94,5 @@ Route::group(['prefix'=>'admin'],function(){
      Route::post('admin/product_edit','admin\contentController@product_edit');
      //产品删除
      Route::post('admin/product/del','admin\contentController@product_del');
+
 

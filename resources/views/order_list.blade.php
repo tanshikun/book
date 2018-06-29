@@ -4,12 +4,26 @@
 <link rel="stylesheet" href="/css/lunbotu.css" />
 @section('content')
 <section class="page1">
-@if($orders!=null&&$orders!='')
-     @foreach($orders as $key=> $order)
+@if($orders!=null&&$orders!=''&&$order_items!=null&&$order_items!='')
+     @foreach($orders as $order)
      <div class="page__bd" style="border-top:2px solid #cccccc;border-bottom:2px solid #cccccc;margin-bottom:20px">
         <div class="weui-cells__title">
             <span>订单号：{{$order->order_no}}</span>
-            <span style="float:right;margin-right:10px;color:red;width:100%-10px">未支付</span>
+            @if($order->status==0)
+                <span style="float:right;margin-right:10px;color:red;width:100%-10px">待支付</span>
+            @endif
+            @if($order->status==1)
+                <span style="float:right;margin-right:10px;color:red;width:100%-10px">已支付</span>
+            @endif
+            @if($order->status==2)
+                <span style="float:right;margin-right:10px;color:red;width:100%-10px">待发货</span>
+            @endif
+            @if($order->status==3)
+                <span style="float:right;margin-right:10px;color:red;width:100%-10px">已发货</span>
+            @endif
+            @if($order->status==4)
+                <span style="float:right;margin-right:10px;color:red;width:100%-10px">交易完成</span>
+            @endif
         </div>
         <div class="weui-cells__title">
             <span>订单金额</span>
@@ -17,13 +31,13 @@
         </div>
         <div class="weui-cells__title">
             <span>订单提交时间</span>
-            <span style="float:right;margin-right:10px;color:red;width:100%-10px">2018-12-30 08:22:18</span>
+            <span style="float:right;margin-right:10px;color:red;width:100%-10px">{{$order->created_at}}</span>
         </div>
         <div class="weui-cells__title" style="height:100px">
             <span>发货信息</span>
             <span style="float:right;margin-right:10px;width:100%-10px">
-                <p>张三&nbsp;&nbsp;&nbsp;&nbsp;18911111111</p>
-                <p>湖北省巴东县叶桑正</p>
+                <p>{{$order->names}}&nbsp;&nbsp;&nbsp;&nbsp;{{$order->tel}}</p>
+                <p>{{$order->address}}</p>
             </span>
         </div>
             @foreach($order->order_items as $order_item) 
@@ -44,8 +58,13 @@
                 @endforeach
                
                 <div class="weui-form-preview__ft">
-                <a class="weui-form-preview__btn weui-form-preview__btn_default" href="javascript:">取消订单</a>
-                <button type="submit" class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:">立即支付</button>
+                @if($order->status!=0)
+                <a class="weui-form-preview__btn weui-form-preview__btn_default" href="javascript:" onclick="order_cancel()">申请退货</a>
+                <button type="submit" class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:" onclick="look()">查看订单</button>
+                @else
+                <a class="weui-form-preview__btn weui-form-preview__btn_default" href="javascript:" onclick="order_cancel()">取消订单</a>
+                <button type="submit" class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:" onclick="pay()">立即支付</button>
+                @endif
             </div>
                 </div>
     @endforeach                      
@@ -60,6 +79,27 @@
 //function order_list(){
 //   location.href="/order_list/"+;
 //}
+    
+function order_cancel(){
+    var order_no="{{$order->order_no}}";
+    $.ajax({
+        url: '/order_cancel/'+order_no,
+        type: 'POST',
+        dataType: 'json',
+        data: {order_no:order_no,_token:"{{csrf_token()}}"},
+        success:function(data){
+            if(data==2){
+                alert('取消成功');
+                location.reload();
+            }
+            if(data!=2){
+                alert('取消失败');
+                return;
+            }
+        }
+    });
+    
+}
 </script>
    
 @endsection

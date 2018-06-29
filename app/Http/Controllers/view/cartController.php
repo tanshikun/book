@@ -185,95 +185,119 @@ private function tongbuCart($member_id,$cart_arr){//将这个方法定义为私�
             return response()->json($cart_arrs,200)
                              ->withCookie('cart',$cart_arrs);
      }
+     
+
      public function toOrderSubmit(Request $request,$product_ids){
-        $product_id_arr = $product_ids!='' ? explode(',', $product_ids) : array();
+        $product_id_arr = $product_ids!='' ? explode(',', $product_ids) : array();//通过用户传过来的id  用，分割成数组并保存
         $member = $request->session()->get('member','');//获取用户的member id
         $cart_items = cart_item::where('member_id',$member->id)->whereIn('product_id',$product_id_arr)->get();//在购物车中  首先使用memberid获取用户id所对应的数据  再通过商品id查询product_ids所对应的产品信息  再获取购物车的列表
-        $cart_item_arr = array();
-        $total_price = 0;
-        $order = new order;
-        $order->member_id =  $member->id;
-        $name='';
-        $order->save(); 
-        foreach ($cart_items as $cart_item) {//通过foreach循环来显示我们的视图。
-            $cart_item->product = product::where('id',$cart_item->product_id)->first();
+        //return $cart_items;
+        $cart_item_arr = array();//声明一个空数组
+        $total_price = 0;//声明一个初始值为0的价格变量
+        $order=order::where('member_id',$member->id)->get();//通过用户id查找订单里的用户id一样的所有数据
+        $name ='';
+        foreach($cart_items as $cart_item){//通过foreach循环来显示我们的视图。
+            $cart_item->product= product::where('id',$cart_item->product_id)->first();
+            //return $cart_item;
             if($cart_item->product!=null){//如果商品信息不存在，可以采用添加的方式，将商品信息添加进来
-                $total_price+=$cart_item->product->price*$cart_item->count;
-                $name.='《'.$cart_item->product->name.'》';
-                array_push($cart_item_arr, $cart_item);
+            $total_price+=$cart_item->product->price*$cart_item->count;
+            //return $total_price;
+            $name.='《'.$cart_item->product->name.'》';
+            //return $name;
+            array_push($cart_item_arr,$cart_item);
             }
-                $order_item = new order_item;
-                $order_item ->order_id = $order->id;
-                $order_item ->product_id=$cart_item->product_id;
-                $order_item ->count=$cart_item->count;
-                $order_item ->product_snapshot=json_encode($cart_item->product);
-                $order_item ->save();
         }
-        //删除购物车中的订单信息
-        cart_item::where('member_id',$member->id)->delete();
-        //生成订单号
-        $int=rand(100000,999999);
-        $font="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        $time=time();
-        $code=$font[rand(0,26)].$font[rand(0,26)].$font[rand(0,26)].$font[rand(0,26)].$time.$int;
-        $order->order_no = $code ;
-        $order->name=$name;
-        $order->total_price=$total_price;
-        $order->save(); 
-
-         
-        //return $cart_item_arr;
-        return view('order_submit')->with('cart_items',$cart_item_arr)
+        //return $name;
+        return  view('order_submit')->with('cart_items',$cart_item_arr)
                                     ->with('total_price',$total_price)
                                     ->with('product_ids',$product_id_arr);
+         
      }
 
 
-     public function toOrderList(Request $request,$product_ids){
-        $product_id_arr = $product_ids!='' ? explode(',', $product_ids) : array();
-        $member = $request->session()->get('member','');//查询用户信息
-        $member_id = $member->id;
-        $cart_items = cart_item::where('member_id',$member->id)->whereIn('product_id',$product_id_arr)->get();
-        //return $cart_items;
-        $cart_item_arr = array();
-        $total_price = 0;
-        $total_count=0;
-        $count_arr=array();
-        foreach ($cart_items as $cart_item){
-            $cart_item->product = product::where('id',$cart_item->product_id)->first();
-           if($cart_item->product!=null){
-                $total_price+=$cart_item->product->price*$cart_item->count;
-                $total_count += $cart_item->count;
-                array_push($cart_item_arr,$cart_item);
-            }}
-           
-        $orders = order::where('member_id',$member->id)->get();//根据memberid查询订单列表信息
+     public function toOrderAddress(Request $request,$product_ids){
+            $product_id_arr = $product_ids!='' ? explode(',', $product_ids) : array();
+            $member = $request->session()->get('member','');
+            $member_id=$member->id;
+            $cart_items = cart_item::where('member_id',$member->id)->whereIn('product_id',$product_id_arr)->get();
+            
+            $name ='';
+                $tel=$_POST['tel'];
+                $address=$_POST['address'];
+                $names=$_POST['names'];
+                if($names==null||$names==''){
+                    return response()->json(1,200);
+                }
+                if($tel==null||$tel==''){
+                    return response()->json(1,200);
+                }
+                if($address==null||$address==''){
+                    return response()->json(1,200);
+                }
+                $payway=$_POST['payway'];
+                $total_price=$_POST['total_price'];
+                //生成订单号
+                $int=rand(100000,999999);
+                $font="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                $time=time();
+                $code=$font[rand(0,26)].$font[rand(0,26)].$font[rand(0,26)].$font[rand(0,26)].$time.$int;
+                //保存到订单数据库
+                $order=new order;
+                $order->order_no = $code ;//订单号
+                $order->save();
+            foreach($cart_items as $cart_item){
+                $cart_item->product= product::where('id',$cart_item->product_id)->first();
+                //return $cart_item;
+                if($cart_item->product!=null){
+                    $name.='《'.$cart_item->product->name.'》';
+              
+                    }
+                    $order_item = new order_item;
+                    $order_item ->order_id = $order->id;
+                    $order_item ->product_id=$cart_item->product_id;
+                    $order_item ->count=$cart_item->count;
+                    $order_item ->product_snapshot=json_encode($cart_item->product);
+                    $order_item ->save();
+            }
+            $orders = order::where('member_id',$member->id)->get();//根据memberid查询订单列表信息
+            //return $orders;
+
+            //return $name;
+                //获取用户的member id
+                $order->name=$name;//商品名称
+                $order->member_id=$member_id;//商品名称
+                $order->total_price=$total_price;//总价
+                $order->tel=$tel;//电话
+                $order->address=$address;//地址
+                $order->names=$names;//收件人
+                $order->payway=$payway;//支付方式
+                $order->save();
+
+                return response()->json('ok',200);
+
+     }
+
+     public function toOrderList(Request $request){
+        $member = $request->session()->get('member','');
+        $member_id=$member->id;
+        $orders = order::where('member_id',$member_id)->get();
         foreach($orders as $order){
-            $order_items = order_item::where('order_id',$order->id)->get();
-            $order->order_items = $order_items;//把order_items作为属性放到order里面
-            foreach($order_items as $order_item){
-                $order_item->product = product::where('id',$order_item->product_id)->first();  
-            } 
-        }
-        //return $orders;
-        
+                $order_items = order_item::where('order_id',$order->id)->get();
+                $order->order_items = $order_items;//把order_items作为属性放到order里面
+                foreach($order_items as $order_item){
+                    $order_item->product = product::where('id',$order_item->product_id)->first();  
+                    } 
+                }
+                //return $orders;
         return view('order_list')->with('orders',$orders)
-                                 ->with('cart_items',$cart_item_arr)
-                                 ->with('total_count',$total_count);
+                                ->with('order_items',$order_items);
      }
-     public function toOrderAddress(Request $request){
 
-        $tel=$_POST['tel'];
-        $address=$_POST['address'];
-        $names=$_POST['name'];
-        $payway=$_POST['payway'];
-        //$orders=order::where('')
-        $orders=new order;
-        $orders->tel=$tel;
-        $orders->address=$address;
-        $orders->names=$names;
-        $orders->payway=$payway;
-        $orders->save();
-        return response()->json('ok',200);
+     public function toOrderCancel($id){
+        $order=order::where('order_no',$id)->first();
+        $order_items=order_item::where('order_id',$order->id)->delete();
+        order::where('order_no',$id)->delete();
+        return response()->json(2,200);
      }
+
 }
