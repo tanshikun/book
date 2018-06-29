@@ -29,24 +29,30 @@
             </select>
         </div>
     </div>
-    <div class="weui-cells__title">填写发货信息</div>
+    </div>
+    <div class="weui-cells__title">填写收货信息</div>
+        <div class="weui-cells weui-cells_checkbox">
+  
+    <div class="weui-cells__title"></div>
         <div class="weui-cell">
         <div class="weui-cell__bd">
-            收件人：<span style="float:right;margin-right:10px;color:red; font-weight:bold"><input type="text" name="name" value="" style="height:25px;width:250px;border:1px solid #cccccc"></span>
+            收件人：<span style="float:right;margin-right:10px;color:red; font-weight:bold"><input type="text" name="names" value="" id="names" style="height:25px;width:250px;"></span>
         </div>
     </div>
     <div class="weui-cell">
         <div class="weui-cell__bd">
-            电话号码：<span style="float:right;margin-right:10px;color:red; font-weight:bold"><input type="text" name="tel" value=""  style="height:25px;width:250px;border:1px solid #cccccc"></span>
+            电话号码：<span style="float:right;margin-right:10px;color:red; font-weight:bold"><input type="text" name="tel" value="" id="tel"  style="height:25px;width:250px;"></span>
         </div>
     </div>
     <div class="weui-cell">
         <div class="weui-cell__bd">
-            详细地址：<span style="float:right;margin-right:10px;color:red; font-weight:bold"><input type="text" name="address" value=""  style="height:25px;width:250px;border:1px solid #cccccc"></span>
+            详细地址：<span style="float:right;margin-right:10px;color:red; font-weight:bold"><input type="text" name="address" value=""  id="address" style="height:25px;width:250px"></span>
         </div>
     </div>
  
     </div>
+</div>  
+
 </div>  
     <div class="weui-cells__title"></div>
     <div class="weui-cells">
@@ -73,29 +79,34 @@ function order_list(){
         ids.push({{$pro}});
     @endforeach
     //location.href="/order_list/"+ids;
-    var value =$('#weui-select').val();
-    var name=$('#name').val();
     var tel=$('#tel').val();
+    var name=$('#names').val();
+    var payway=$('#weui-select').val();
     var address=$('#address').val();
     $.ajax({
-        url: '/order_list/'+ids,
-        type: 'POST',
-        dataType: 'json',
-        data: {value: value,
-                name:name,
-                tel:tel,
-                address:address},
-    })
-    .done(function() {
-        console.log("success");
-    })
-    .fail(function() {
-        console.log("error");
-    })
-    .always(function() {
-        console.log("complete");
-    });
-    
+           url: '/order_address',
+           type: 'POST',
+           dataType: 'json',
+           data: {name:name,
+                  tel:tel,
+                    payway:payway,
+                    address:address,
+                    _token:"{{csrf_token()}}"},
+                    success:function(data){
+                    if(data==null){
+                    $('.bk_toptips').show();
+                    $('.bk_toptips span').html("服务器端错误!");
+                    setTimeout(function() {$('.bk_toptips').hide();}, 2000);
+                        return;
+                    }
+                    if(data.status!=0){
+                        
+                    }
+                    location.href="/order_list/"+ids;
+                } 
+       })
+
+          
 }
 
 </script>

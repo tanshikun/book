@@ -6,7 +6,7 @@
 <section class="page1">
 <div class="weui-cells__title">购物车列表<span style="float:right; font-size:14px;" id="quanxuan" onclick='selectAll()'>全选</span></div>
         <div class="weui-cells weui-cells_checkbox">
-        @if($cart_items!=null&&$cart_items!='')
+    @if($cart_items!=null&&$cart_items!='')
         @foreach($cart_items as $cart_item)
             <label class="weui-cell weui-check__label" for="{{$cart_item->product->id}}">
                 <div class="weui-cell__hd">
@@ -25,7 +25,7 @@
                 </div>
             </label>
         @endforeach    
-        @endif     
+    @endif     
         <div class="weui-cells__title" style="text-align:center; color:green; line-height:40px; height:40px; font-size:16px" onclick="add_product()">
             点击添加更多>>
         </div>

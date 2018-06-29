@@ -42,7 +42,17 @@ Route::get('/cart','view\cartController@toCart');
 
 Route::get('/cart/deleteCart','view\cartController@deleteCart');
 Route::get('/order_submit/{product_ids}','view\cartController@toOrderSubmit')->middleware('check_login');
-Route::get('/order_list/{product_ids}','view\cartController@toOrderList')->middleware('check_login');
+//收货地址填写
+Route::post('/order_address','view\cartController@toOrderAddress');
+
+
+Route::post('/order_list/{product_ids}','view\cartController@toOrderList')->middleware('check_login');
+
+
+
+
+
+
 
 Route::group(['prefix'=>'admin'],function(){
     //主页

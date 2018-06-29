@@ -4,9 +4,9 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class addressMiddleware
-{
-    /**
+class address
+    {
+         /**
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -15,6 +15,7 @@ class addressMiddleware
      */
     public function handle($request, Closure $next)
     {
-        return view('');
+
+        return view('address');
     }
-}
+    }

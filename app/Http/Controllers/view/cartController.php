@@ -248,7 +248,6 @@ private function tongbuCart($member_id,$cart_arr){//将这个方法定义为私�
             }}
            
         $orders = order::where('member_id',$member->id)->get();//根据memberid查询订单列表信息
-
         foreach($orders as $order){
             $order_items = order_item::where('order_id',$order->id)->get();
             $order->order_items = $order_items;//把order_items作为属性放到order里面
@@ -257,9 +256,24 @@ private function tongbuCart($member_id,$cart_arr){//将这个方法定义为私�
             } 
         }
         //return $orders;
-  
+        
         return view('order_list')->with('orders',$orders)
                                  ->with('cart_items',$cart_item_arr)
                                  ->with('total_count',$total_count);
+     }
+     public function toOrderAddress(Request $request){
+
+        $tel=$_POST['tel'];
+        $address=$_POST['address'];
+        $names=$_POST['name'];
+        $payway=$_POST['payway'];
+        //$orders=order::where('')
+        $orders=new order;
+        $orders->tel=$tel;
+        $orders->address=$address;
+        $orders->names=$names;
+        $orders->payway=$payway;
+        $orders->save();
+        return response()->json('ok',200);
      }
 }

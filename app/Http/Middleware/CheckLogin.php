@@ -26,3 +26,4 @@ class CheckLogin
         return $next($request);
     }
 }
+
