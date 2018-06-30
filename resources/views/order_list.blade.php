@@ -12,9 +12,6 @@
             @if($order->status==0)
                 <span style="float:right;margin-right:10px;color:red;width:100%-10px">待支付</span>
             @endif
-            @if($order->status==1)
-                <span style="float:right;margin-right:10px;color:red;width:100%-10px">已支付</span>
-            @endif
             @if($order->status==2)
                 <span style="float:right;margin-right:10px;color:red;width:100%-10px">待发货</span>
             @endif

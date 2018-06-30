@@ -59,7 +59,7 @@
             <dt><i class="Hui-iconfont">&#xe60d;</i> 会员管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
             <dd>
                 <ul>
-                    <li><a data-href="member-list.html" data-title="会员列表" href="javascript:;">会员列表</a></li>
+                    <li><a data-href="/admin/member" data-title="会员列表" href="javascript:;">会员列表</a></li>
                     
             </ul>
         </dd>
@@ -73,7 +73,7 @@
         <div class="Hui-tabNav-wp">
             <ul id="min_title_list" class="acrossTab cl">
                 <li class="active">
-                    <span title="我的桌面" data-href="welcome.html">我的桌面</span>
+                    <span title="我的桌面" data-href="/admin/welcome">我的桌面</span>
                     <em></em></li>
         </ul>
     </div>
@@ -82,7 +82,7 @@
     <div id="iframe_box" class="Hui-article">
         <div class="show_iframe">
             <div style="display:none" class="loading"></div>
-            <iframe scrolling="yes" frameborder="0" src=""></iframe>
+            <iframe scrolling="yes" frameborder="0" src="/admin/welcome"></iframe>
     </div>
 </div>
 </section>

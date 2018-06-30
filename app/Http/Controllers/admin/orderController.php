@@ -32,4 +32,22 @@ class orderController extends Controller
             //return $orders;
             return view('admin/orderList')->with('orders',$orders);
     }
+    public function order_content($id){
+        $orders=order::where('id',$id)->first();//获取订单表里面对应订单id的数据
+        $order_items=order_item::where('order_id',$id)->get();//获取订单列表中的数据
+        foreach ($order_items as $order_item) {//便利购买商品的数据
+            $order_item->product=product::where('id',$order_item->product_id)->first();
+        }
+        $members=member::where('id',$orders->member_id)->first();
+        return view('admin/order_content')->with('orders',$orders)
+                                          ->with('order_items',$order_items)
+                                          ->with('members',$members);
+    }
+    public function send_goods($id){
+        $orders=order::where('id',$id)->first();
+        $orders->status=3;
+        $orders->save();
+        return response()->json('ok',200);
+    }
+    
 }

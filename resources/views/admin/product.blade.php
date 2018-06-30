@@ -47,6 +47,9 @@
 </div>
 @endsection
 @section('my-js')
+<script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script> 
+<script type="text/javascript" src="lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
+<script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript">
     function product_content(name,url,id){
         var index = layer.open({ 

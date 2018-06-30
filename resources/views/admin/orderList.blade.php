@@ -27,50 +27,62 @@
         </thead>
 
         <tbody>
-
+@foreach($orders as $order)
             <tr class="text-c">
-            @foreach($orders as $order)
+            
                 <td><input type="checkbox" value="1" name=""></td>
                 <td>{{$order->id}}</td>
-                <td>{{$order->member->email}}</td>
+                <td>
+                    @if($order->member->email!=null&&$order->member->email)
+                    {{$order->member->email}}
+                    @else{{$order->member->phone}}
+                    @endif
+                </td>
                 <td>{{$order->order_no}}</td>
                 <td>{{$order->names}}</td>
                 <td>{{$order->address}}</td>
                 <td>{{$order->tel}}</td>
                 <td>{{$order->created_at}}</td>
-                <td>{{$order->status}}</td>
+                @if($order->status==0)
+                <td class="td-status"><span class="label label-success radius" style="background-color:red">待支付</span></td>
                 <td class="td-manage">
-                <a title="产品详情" href="javascript:;" onclick="product_content('产品详情','')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe695;</i></a> 
-                <a title="删除" href="javascript:;" onclick="product_del()" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>
+                <a title="产品详情" href="javascript:;" onclick="order_content('订单详情','/admin/order_content/{{$order->id}}')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe695;</i></a> 
+                @endif
+                @if($order->status==2)
+                <td class="td-status"><span class="label label-success radius"  style="background-color:orange">待发货</span></td>
+                <td class="td-manage">
+                <a title="产品详情" href="javascript:;" onclick="order_content('订单详情','/admin/order_content/{{$order->id}}')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe695;</i></a> 
+                <a title="点击发货" href="javascript:;" onclick="send_goods('{{$order->id}}')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe634;</i></a>
                 </td>
-            @endforeach
+                @endif
+                @if($order->status==3)
+                <td class="td-status"><span class="label label-success radius">已发货</span></td>
+                <td class="td-manage">
+                <a title="产品详情" href="javascript:;" onclick="order_content('订单详情','/admin/order_content/{{$order->id}}')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe695;</i></a> 
+                <a title="查看物流" href="javascript:;" onclick="" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe669;</i></a>
+                </td>
+                @endif
+                @if($order->status==4)
+                <td class="td-status"><span class="label label-success radius">交易完成</span></td>
+                <td class="td-manage">
+                <a title="产品详情" href="javascript:;" onclick="order_content('订单详情','/admin/order_content/{{$order->id}}')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe695;</i></a> 
+                <a title="删除" href="javascript:;" onclick="order_del()" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>
+                </td>
+                @endif
             </tr>
-
+   @endforeach
             
         </tbody>
     </table>
 </div>
 @endsection
 @section('my-js')
+<script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script> 
+<script type="text/javascript" src="lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
+<script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript">
-    function product_content(name,url,id){
-        var index = layer.open({ 
-        type: 2,
-        title: name,
-        content: url
-    });
-    layer.full(index);
-    }
-    function product_add(name,url){
-        var index = layer.open({ 
-        type: 2,
-        title: name,
-        content: url
-    });
-    layer.full(index);
-    }
 
-    function product_edit(name,url,id){
+    function order_content(name,url,id){
         var index = layer.open({ 
         type: 2,
         title: name,
@@ -101,7 +113,26 @@
                     }
                     );
         });
-    }  
+    } 
+    function send_goods(id){
+        layer.confirm('确认发货？',function(index){
+            $.ajax({
+            url: '/admin/send_goods/'+id,
+            type: 'POST',
+            dataType: 'json',
+            data: {id:id,
+                   _token:'{{csrf_token()}}'},
+            success:function(data){
+                if(data=='ok'){
+                    alert('发货成功！');
+                    location.replace(location.href);
+                } 
+            }
+        });
+        });
+    }
+        
+
 </script>
 
 

@@ -66,6 +66,8 @@ Route::group(['prefix'=>'admin'],function(){
      Route::get('login','admin\indexController@toLogin');
      //订单列表
      Route::get('orderList','admin\orderController@toOrderList');
+     //会员管理
+     Route::get('member','admin\memberController@toMember');
      Route::post('login','admin\indexController@login');
      //产品添加
      Route::get('categroy_add','admin\categroyController@toCategroyAdd');
@@ -94,5 +96,9 @@ Route::group(['prefix'=>'admin'],function(){
      Route::post('admin/product_edit','admin\contentController@product_edit');
      //产品删除
      Route::post('admin/product/del','admin\contentController@product_del');
-
+     //查看订单详情
+     Route::get('admin/order_content/{id}','admin\orderController@order_content');
+     Route::post('admin/send_goods/{id}','admin\orderController@send_goods');
+     //我的桌面
+     Route::get('admin/welcome','admin\indexController@welcome');
 
