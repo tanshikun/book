@@ -27,7 +27,7 @@ Route::post('/ajax_tel','view\memberController@ajax_tel');
 Route::post('/ajax_email','view\memberController@ajax_email');
 Route::post('/ajax_on_login','view\memberController@ajax_on_login');
 Route::post('/logup','view\memberController@logup');
-
+Route::get('/exit_login','view\memberController@exit_login');
 
 Route::get('/categroy','view\bookController@toCategroy');
 Route::get('/categroy/parent_id/{parent_id}','view\bookController@getCategroyByParentId');

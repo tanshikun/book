@@ -12,4 +12,5 @@ class memberController extends Controller
         $members=member::all();
         return view('admin/member')->with('members',$members);
     }
+
 }

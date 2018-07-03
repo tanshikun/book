@@ -239,7 +239,7 @@ private function tongbuCart($member_id,$cart_arr){//将这个方法定义为私�
                 //生成订单号
                 $int=rand(100000,999999);
                 $font="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-                $time=time();
+                $time=date('YmdHis',time());
                 $code=$font[rand(0,26)].$font[rand(0,26)].$font[rand(0,26)].$font[rand(0,26)].$time.$int;
                 //保存到订单数据库
                 $order=new order;

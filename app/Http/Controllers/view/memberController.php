@@ -24,7 +24,13 @@ class memberController extends Controller
         return view('register');
     }
 
-
+    public function exit_login(Request $request){
+        $member=$request->session()->get('member','');
+        if($member!=null&&$member!=''){
+            
+        }
+        return view('login');
+    }
 
     public function ajax_tel(){
         $post_phone=$_POST['phone'];   

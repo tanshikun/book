@@ -17,6 +17,8 @@ class CheckLogin
     {
         if (isset($_SERVER['HTTP_REFERER'])) {
              $http_referer = $_SERVER['HTTP_REFERER'];//通过这个php的内置方法获取上一次访问的地址
+        }else{
+            $http_referer =$request->path();
         }
        
         $member = $request->session()->get('member','');//通过request方法获取session  当没获取到member的时候 取一个空字符串
