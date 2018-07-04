@@ -64,7 +64,7 @@
                     $('.bk_toptips').show();
                     $('.bk_toptips span').html("登录成功!");
                     setTimeout(function() {$('.bk_toptips').hide();}, 2000);
-                    @if($return_url)
+                    @if(isset($return_url))
                     location.href="{{$return_url}}";
                     @else
                     location.href="/categroy";

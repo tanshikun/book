@@ -27,7 +27,7 @@ class memberController extends Controller
     public function exit_login(Request $request){
         $member=$request->session()->get('member','');
         if($member!=null&&$member!=''){
-            
+            session('member','');
         }
         return view('login');
     }
@@ -48,6 +48,8 @@ class memberController extends Controller
         $temp_phone -> save();//保存
         $code=urlencode("#code#=$code_value");//给随机验证码加密
         //$res=file_get_contents("http://v.juhe.cn/sms/send?mobile=$post_phone&tpl_id=82739&tpl_value=$code&key=dca53ad5760be418636afe1e5cf6107e");//短信接口
+       // \cookie::queue('user',$post_phone,3600);
+
         return response()->json("ok",200);    
     }
     public function ajax_email(){
