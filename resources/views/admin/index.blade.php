@@ -15,7 +15,7 @@
                 <li class="dropDown dropDown_hover">
                     <a href="#" class="dropDown_A">admin <i class="Hui-iconfont">&#xe6d5;</i></a>
                     <ul class="dropDown-menu menu radius box-shadow">
-                        <li><a href="#">退出</a></li>
+                        <li><a href="#" onclick="exist_login()">退出</a></li>
                 </ul>
             </li>
                 <li id="Hui-msg"> <a href="#" title="消息"><span class="badge badge-danger">1</span><i class="Hui-iconfont" style="font-size:18px">&#xe68a;</i></a> </li>
@@ -93,4 +93,18 @@
         <li id="closeall">关闭全部 </li>
 </ul>
 </div>
+@endsection
+@section('my-js')
+
+<script type="text/javascript">
+    function exist_login(){
+        layer.confirm('确认要退出登录吗？',function(){
+           location.href="/admin/exist_login";
+            });
+            
+        }
+
+
+</script>
+
 @endsection

@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="/css/lunbotu.css" />
 @section('content')
 <section class="page1">
-@if($orders!=null&&$orders!=''&&$order_items!=null&&$order_items!='')
+@if(isset($orders))
      @foreach($orders as $order)
      <div class="page__bd" style="border-top:2px solid #cccccc;border-bottom:2px solid #cccccc;margin-bottom:20px">
         <div class="weui-cells__title">
@@ -64,7 +64,33 @@
                 @endif
             </div>
                 </div>
-    @endforeach                      
+    @endforeach 
+    <script type="text/javascript">
+        function order_cancel(){
+            var order_no="{{$order->order_no}}";
+            $.ajax({
+                url: '/order_cancel/'+order_no,
+                type: 'POST',
+                dataType: 'json',
+                data: {order_no:order_no,_token:"{{csrf_token()}}"},
+                success:function(data){
+                    if(data==2){
+                        alert('取消成功');
+                        location.reload();
+                    }
+                    if(data!=2){
+                        alert('取消失败');
+                        return;
+                    }
+                }
+    });
+    
+}
+</script> 
+@else
+        <div class="weui-cells__title" style="margin:0 auto;">
+            <span>这里什么也没有~~</span>
+        </div>            
  @endif
 </section>
 
@@ -72,31 +98,6 @@
 
 @section('my-js')
 
-<script type="text/javascript">
-//function order_list(){
-//   location.href="/order_list/"+;
-//}
-    
-function order_cancel(){
-    var order_no="{{$order->order_no}}";
-    $.ajax({
-        url: '/order_cancel/'+order_no,
-        type: 'POST',
-        dataType: 'json',
-        data: {order_no:order_no,_token:"{{csrf_token()}}"},
-        success:function(data){
-            if(data==2){
-                alert('取消成功');
-                location.reload();
-            }
-            if(data!=2){
-                alert('取消失败');
-                return;
-            }
-        }
-    });
-    
-}
-</script>
+
    
 @endsection

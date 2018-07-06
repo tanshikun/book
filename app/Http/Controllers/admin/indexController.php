@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 class indexController extends Controller
 {
@@ -17,5 +18,12 @@ class indexController extends Controller
    }
    public function welcome(){
         return view('admin/welcome');
+   }
+   public function exist_login(Request $request){
+        $admin = $request->session()->get('admin','');
+        if($admin!=null&&$admin!=''){
+            session('admin','');
+        }
+        return view('admin/login');
    }
 }

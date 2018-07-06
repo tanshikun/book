@@ -61,8 +61,31 @@
             </tr>
             <tr>
                 <td>服务器当前时间 </td>
-                <td>2014-6-14 12:06:23</td>
+                <td id="serverTime"></td>
             </tr>
+<script type="text/javascript">
+    
+    var timeDiff=new Date().valueOf()-<?php echo time()*1000;?>;
+    function serverTime(){
+            this.date = new Date();
+            date.setTime(new Date().valueOf()-timeDiff);
+            this.year   =date.getFullYear();
+            this.month  =date.getMonth()+1;
+            this.day    =date.getDate();
+            this.hour   =date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+            this.minute =date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+            this.second =date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+            var s=year+'年'+month+'月'+day+'日 '+hour+':'+minute+':'+second;
+            document.getElementById("serverTime").innerHTML=s;
+    }
+      window.onload=function(){
+            serverTime();
+            setInterval(function(){
+            serverTime();
+            }, 1000);
+    }  
+</script>     
+
             <tr>
                 <td>服务器IE版本 </td>
                 <td>6.0000</td>

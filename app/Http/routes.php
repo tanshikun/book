@@ -101,4 +101,6 @@ Route::group(['prefix'=>'admin'],function(){
      Route::post('admin/send_goods/{id}','admin\orderController@send_goods');
      //我的桌面
      Route::get('admin/welcome','admin\indexController@welcome');
+     //退出管理员登录
+     Route::get('admin/exist_login','admin\indexController@exist_login');
 

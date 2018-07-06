@@ -283,14 +283,17 @@ private function tongbuCart($member_id,$cart_arr){//将这个方法定义为私�
         $orders = order::where('member_id',$member_id)->get();
         foreach($orders as $order){
                 $order_items = order_item::where('order_id',$order->id)->get();
-                $order->order_items = $order_items;//把order_items作为属性放到order里面
-                foreach($order_items as $order_item){
-                    $order_item->product = product::where('id',$order_item->product_id)->first();  
-                    } 
+                if($order_items!=null&&$order_items!=''){
+                        $order->order_items = $order_items;//把order_items作为属性放到order里面
+                            foreach($order_items as $order_item){
+                                $order_item->product = product::where('id',$order_item->product_id)->first();  
+                                } 
+                            }
+                            //return $orders;
+                    return view('order_list')->with('orders',$orders)
+                                             ->with('order_items',$order_items);
                 }
-                //return $orders;
-        return view('order_list')->with('orders',$orders)
-                                ->with('order_items',$order_items);
+                return view('order_list');
      }
 
      public function toOrderCancel($id){
