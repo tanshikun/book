@@ -79,7 +79,7 @@
             document.getElementById("serverTime").innerHTML=s;
     }
       window.onload=function(){
-            serverTime();
+            serverTime(); 
             setInterval(function(){
             serverTime();
             }, 1000);

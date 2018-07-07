@@ -48,7 +48,9 @@ Route::any('/order_list','view\cartController@toOrderList')->middleware('check_l
 //取消订单
 Route::post('/order_cancel/{order_no}','view\cartController@toOrderCancel');
 
-
+Route::get('/404',function(){
+        return view('/404');
+     });
 
 
 
